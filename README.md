@@ -35,3 +35,5 @@
 ![image](https://user-images.githubusercontent.com/55440084/159134624-47a24c67-be57-4c02-baf7-8ec789663092.png)
 
 ## Часть 2.
+Код второй части также лежит в ноутбуке. Модифицированный `.bed` файл лежит в репозитории. Скриншот:  
+![image](https://user-images.githubusercontent.com/55440084/160251623-7425bb3c-b068-46fc-966e-83231baf5fb4.png)
