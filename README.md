@@ -1,4 +1,63 @@
 # Домашнее задание №3
+Код:  
+```
+!curl -O https://raw.githubusercontent.com/deepjavalibrary/d2l-java/master/tools/fix-colab-gpu.sh && bash fix-colab-gpu.sh
+!curl -O https://raw.githubusercontent.com/deepjavalibrary/d2l-java/master/tools/colab_build.sh && bash colab_build.sh
+!java --list-modules | grep "jdk.jshell"
+!wget http://compbio.mit.edu/ChromHMM/ChromHMM.zip
+!unzip /content/ChromHMM.zip
+
+# H3K9ac
+!wget http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneDnd41H3k09acAlnRep1.bam -O H3k09acAlnRep1.bam
+# H3K79m2
+!wget http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneDnd41H3k79me2AlnRep1.bam -O H3k79me2AlnRep1.bam
+# H3k4me3
+!wget http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneDnd41H3k04me3AlnRep1.bam -O H3k04me3AlnRep1.bam
+# H3K4me2
+!wget http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneDnd41H3k04me2AlnRep1.bam -O H3k04me2AlnRep1.bam
+# H3K4me1
+!wget http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneDnd41H3k04me1AlnRep1.bam -O H3k04me1AlnRep1.bam
+# H3K36me3
+!wget http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneDnd41H3k36me3AlnRep1.bam -O H3k36me3AlnRep1.bam
+# H3K27me3
+!wget http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneDnd41H3k27me3AlnRep1.bam -O H3k27me3AlnRep1.bam
+# H3K27ac
+!wget http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneDnd41H3k27acAlnRep1.bam -O H3k27acAlnRep1.bam
+# H2AFZ
+!wget http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneDnd41H2azAlnRep1.bam -O H2azAlnRep1.bam
+# Control
+!wget http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneDnd41ControlStdAlnRep1.bam -O ControlStdAlnRep1.bam
+# H3K9me3
+!wget http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneDnd41H3k09me3AlnRep1.bam -O H3k09me3AlnRep1.bam
+
+!java -mx5000M -jar /content/ChromHMM/ChromHMM.jar BinarizeBam -b 200  /content/ChromHMM/CHROMSIZES/hg19.txt /content/ cellmarkfiletable.txt   binarizedData
+
+!java -mx5000M -jar /content/ChromHMM/ChromHMM.jar LearnModel /content/binarizedData result 10 hg19
+
+!zip -r result.zip result
+
+from google.colab import files
+files.download("result.zip")
+
+# Часть 2
+
+skipped = 0
+new_names = {'1' : '1_Repressed', '2' : '2_Heterochromatin', '3' : '3_Repressed', '4' : '4_Transcribed', '5' : '5_Transcribed', '6' : '6_Transcribed', '7' : '7_Transcribed', '8' : '8_Repressed', '9' : '9_Repressed', '10' : '10_Active_Promoter'}
+
+with open('Dnd41_10_dense.bed') as file:
+  with open('Dnd41_10_modified_dense.bed','w') as f:
+    for line in file:
+      if skipped == 0:
+        f.write(line)
+        skipped = 1
+      else:
+        data = line
+        data = data.split('\t')
+        data[3] = new_names[data[3]]
+        f.write('\t'.join(data))
+        
+!head Dnd41_10_modified_dense.bed
+```
 ## Часть 1.
 ### 1. Таблицы
 |Метки   |Файлы              |
@@ -35,5 +94,5 @@
 ![image](https://user-images.githubusercontent.com/55440084/159134624-47a24c67-be57-4c02-baf7-8ec789663092.png)
 
 ## Часть 2.
-Код второй части также лежит в ноутбуке. Модифицированный `.bed` файл лежит в репозитории. Скриншот:  
+Код второй части также лежит в одном файле, вместе с первой. Модифицированный `.bed` файл лежит в репозитории. Скриншот:  
 ![image](https://user-images.githubusercontent.com/55440084/160251623-7425bb3c-b068-46fc-966e-83231baf5fb4.png)
